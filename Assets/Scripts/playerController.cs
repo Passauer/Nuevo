@@ -9,7 +9,7 @@ public class playerController : MonoBehaviour
     public string namePlayer = "Panchito";
     public float scalePlayer = 1.0f;
     public float healthPlayer = 100;
-
+    float rotar;
 
     // Start is called before the first frame update
     void Start()
@@ -22,6 +22,7 @@ public class playerController : MonoBehaviour
     void Update()
     {
         goPlayer();
+        RotatePlayer();
     }
 
 
@@ -30,7 +31,7 @@ public class playerController : MonoBehaviour
         float xGo = Input.GetAxis("Horizontal");
         float zGo = Input.GetAxis("Vertical");
         Vector3 goDirection = new Vector3(xGo, 0.0f, zGo);
-        transform.position += goDirection * speed * Time.deltaTime;
+        transform.Translate(speed * Time.deltaTime * new Vector3(xGo, 0, zGo));
     }
 
     void healPlayer()
@@ -44,7 +45,12 @@ public class playerController : MonoBehaviour
     }
 
 
-
+    private void RotatePlayer()
+    {
+        rotar += Input.GetAxis("Mouse X");
+        Quaternion angulo = Quaternion.Euler(0, rotar, 0);
+        transform.localRotation = angulo;
+    }
 
 
 
