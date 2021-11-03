@@ -10,6 +10,9 @@ public class playerController : MonoBehaviour
     public float scalePlayer = 1.0f;
     public float healthPlayer = 100;
     float rotar;
+    private bool crecer = false;
+    private float cooldown = 2;
+    private float tempPortal;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +55,45 @@ public class playerController : MonoBehaviour
         transform.localRotation = angulo;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.gameObject.name);
 
+        if (collision.gameObject.CompareTag("Portal"))
+        {
+            Debug.Log("is shrinker!");
+        }
+
+            if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(collision.gameObject);
+        }
+        
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.gameObject.name);
+        if(other.gameObject.CompareTag("Portal"))
+        {
+            Debug.Log("is shrinker!");
+            if (Time.time > tempPortal)
+            {
+                if(crecer == false)
+                {
+                    transform.localScale = new Vector3(0.5f,0.5f,0.5f);
+                    crecer = true;
+                    tempPortal = Time.time + cooldown;
+                }
+                else
+                {
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                    crecer = false;
+                    tempPortal = Time.time + cooldown;
+                }
+            }
+        }
+    }
 
 
 
